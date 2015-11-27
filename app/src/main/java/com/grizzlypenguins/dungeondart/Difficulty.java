@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 /**
  * Created by Darko on 16.11.2015.
- * It requires more balancing
  */
 public class Difficulty implements Serializable {
 
@@ -13,6 +12,7 @@ public class Difficulty implements Serializable {
     public int playerSpeed;
     public double multiplier;    // the multiplier is for the score
     public double torchDecrease;
+    public float torchLightLifeDecrease;
 
     public Difficulty(int numb)
     {
@@ -29,40 +29,45 @@ public class Difficulty implements Serializable {
     {
 
         switch (starNumber) {
-            case 0:
+            case 1:
             {
 
-                monsterSpeed = 4;
-                playerSpeed = 3;
+                monsterSpeed = 7;
+                playerSpeed = 6;
                 multiplier = 1;  // no bonus points
-                torchDecrease = 0.8;
-                break;
+                torchDecrease = 0.35;
+                torchLightLifeDecrease = (float) 4.5;
 
-            }
-            case 1: {
-
-                monsterSpeed = 3;
-                playerSpeed = 3;
-                multiplier = 1.2;  //bonus 0.2% points
-                torchDecrease = 1;
                 break;
 
             }
             case 2: {
 
-                monsterSpeed = 2;
-                playerSpeed = 2;
+                monsterSpeed = 6;
+                playerSpeed = 6;
+                multiplier = 1.2;  //bonus 0.2% points
+                torchDecrease = 0.5;
+                torchLightLifeDecrease = (float) 4.5;
+                break;
+
+            }
+            case 3: {
+
+                monsterSpeed = 5;
+                playerSpeed = 5;
                 multiplier = 1.5; //bonus 0.5% points
-                torchDecrease = 1.5;
+                torchDecrease = 0.8;
+                torchLightLifeDecrease = (float) 4.5;
                 break;
 
             }
             default: {
 
                 monsterSpeed = 3;
-                playerSpeed = 3;
+                playerSpeed = 5;
                 multiplier = 1.2;
                 torchDecrease = 1;
+                torchLightLifeDecrease = (float) 4.5;
                 break;
 
             }

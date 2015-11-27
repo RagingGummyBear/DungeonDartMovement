@@ -53,10 +53,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     void initialize()
     {
-        myFactory.getInstance().TileNotMovable = BitmapFactory.decodeResource(getResources(), R.drawable.notmovabletile);
-        myFactory.getInstance().TileMovable = BitmapFactory.decodeResource(getResources(), R.drawable.movabletile);
-        myFactory.getInstance().Character = BitmapFactory.decodeResource(getResources(),R.drawable.character);
-        myFactory.getInstance().resize();
+
 
         myGameLoop = new MyGameLoop(this);
         test = myFactory.getInstance().test_tile_1();
@@ -83,8 +80,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 surfaceSize = getWidth();
             }
 
-            double tileSize = 32;
-            double scale =  surfaceSize/(tileSize * 9);
+            double scale =  surfaceSize/(myFactory.TILENUMBER * myFactory.TILESIZE);
             System.out.print("THE scale is wrong , or the srufaceview"+scale + " THE VIEWSIZE : " + surfaceSize);
             canvasZoom = (float) scale;
 
@@ -189,9 +185,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         if(level != null)
         {
-            level.cameraControl.render(canvas);
-            level.mainCharacter.render(canvas);
-
+          level.render(canvas);
         }
         canvas.restore();
     }

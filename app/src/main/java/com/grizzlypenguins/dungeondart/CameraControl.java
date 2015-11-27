@@ -33,12 +33,15 @@ public class CameraControl implements Serializable {
     public boolean move_down = false;
     public boolean moved = false;
 
+    int num = myFactory.TILENUMBER/2;
+
 
     public CameraControl(double scaleX, double scaleY,double Ts,MyPoint poz,int playerMovement) {
         tileSize = myFactory.TILESIZE;
-
-        this.playerMovement = playerMovement;
         speed = playerMovement;
+        this.playerMovement = 0;
+
+
         player_position = new MyPoint(poz.x,poz.y);
         this.scaleX = scaleX;
         this.scaleY = scaleY;
@@ -73,51 +76,51 @@ public class CameraControl implements Serializable {
 
     private Tile move()
     {
-        int num = myFactory.TILENUMBER/2;
-        if(move_left)
-        {
-            if(movableTile(tiles[num -1][num]))
 
-            {
-                player_position.x--;
-                moved = true;
-                return tiles[num -1][num];
+        if(move_up || move_down || move_left || move_right) {
+            if(playerMovement == 0) {
+                playerMovement = speed;
+                if (move_left) {
+                    if (movableTile(tiles[num - 1][num]))
+
+                    {
+                        player_position.x--;
+                        moved = true;
+                        return tiles[num - 1][num];
+                    }
+                } else if (move_right) {
+                    if (movableTile(tiles[num + 1][num]))
+
+                    {
+                        player_position.x++;
+                        moved = true;
+                        return tiles[num + 1][num];
+                    }
+                } else if (move_down) {
+                    if (movableTile(tiles[num][num + 1]))
+
+                    {
+                        player_position.y++;
+                        moved = true;
+                        return tiles[num][num + 1];
+                    }
+
+                } else if (move_up) {
+                    if (movableTile(tiles[num][num - 1]))
+
+                    {
+                        player_position.y--;
+                        moved = true;
+                        return tiles[num][num - 1];
+                    }
+
+                }
+
             }
-        }
-        else
-        if(move_right)
-        {
-            if(movableTile(tiles[num+1][num]))
-
-            {
-                player_position.x++;
-                moved = true;
-                return tiles[num+1][num];
+            else {
+                //System.out.println(" The speed is: "+playerMovement);
+                playerMovement--;
             }
-        }
-        else
-        if(move_down)
-        {
-            if(movableTile(tiles[num][num+1]))
-
-            {
-                player_position.y++;
-                moved = true;
-                return tiles[num][num+1];
-            }
-
-        }
-        else
-        if(move_up)
-        {
-            if(movableTile(tiles[num][num-1]))
-
-            {
-                player_position.y--;
-                moved = true;
-                return tiles[num][num-1];
-            }
-
         }
         return null;
     }
@@ -129,18 +132,14 @@ public class CameraControl implements Serializable {
         move_up = false;
         move_down = false;
         moved = false;
+        playerMovement = 0;
     }
 
     public Tile tick()
     {
-        if(playerMovement == 0){
-            playerMovement = speed;
-            return this.move();
-        }
-        else
-            playerMovement--;
 
-        return null;
+        return this.move();
+
 
     }
 
@@ -156,6 +155,56 @@ public class CameraControl implements Serializable {
                 tiles[i][y].render(c, (float) (i * tileSize), (float) (y * tileSize));
             }
         }
+    }
+
+    public void calculateShadow(int intensity)
+    {
+        Math.floor(intensity);
+        int start = (int) Math.floor(myFactory.TILENUMBER / 2);
+        //start++;
+        int end = start;
+       // end-=2;
+       // end++;
+        start -= intensity;
+        end += intensity;
+
+        for(int i=0;i<myFactory.TILENUMBER;i++)
+        {
+            for(int y=0;y<myFactory.TILENUMBER;y++)
+            {
+                if(i<start)
+                {
+                    tiles[i][y].shadow = true;
+                    //System.out.println(" Wat wat 1? ");
+                }
+                else
+                if(i>end)
+                {
+                    //System.out.println(" Wat wat 2? ");
+
+                    tiles[i][y].shadow = true;
+                }
+
+                else
+                if(y<start)
+                {
+                    //System.out.println(" Wat wat 3? ");
+                    tiles[i][y].shadow = true;
+                }
+                else
+                if(y>end)
+                {
+                  //  System.out.println(" Wat wat 4? ");
+                    tiles[i][y].shadow = true;
+                }
+                else
+                    tiles[i][y].shadow = false;
+               // tiles[i][y].shadow = false;
+
+
+            }
+        }
+
     }
 
 }

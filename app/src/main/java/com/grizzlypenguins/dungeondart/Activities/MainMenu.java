@@ -2,6 +2,7 @@ package com.grizzlypenguins.dungeondart.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
@@ -114,9 +115,17 @@ public class MainMenu extends Activity {
 
                 Intent myIntent = new Intent(MainMenu.this,
                         GamePlayActivity.class);
-                Difficulty dif = new Difficulty(ratingBar.getNumStars());
+                Difficulty dif = new Difficulty((int) ratingBar.getRating());
+                System.out.println("The number of stars : " + ratingBar.getNumStars());
                 startNewLevel = new Level(dif, myFactory.getInstance().test_map_1(),window.getDecorView().getWidth(),window.getDecorView().getHeight());
                 startNewLevel.start();
+
+                myFactory.getInstance().TileNotMovable = BitmapFactory.decodeResource(getResources(), R.drawable.notmovabletile);
+                myFactory.getInstance().TileMovable = BitmapFactory.decodeResource(getResources(), R.drawable.movabletile);
+                myFactory.getInstance().Character = BitmapFactory.decodeResource(getResources(),R.drawable.character);
+                myFactory.getInstance().TorchLight = BitmapFactory.decodeResource(getResources(),R.drawable.beginingfog);
+                myFactory.getInstance().resize();
+
                 while(startNewLevel.running){
 
                 }

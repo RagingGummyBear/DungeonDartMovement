@@ -14,12 +14,13 @@ public class myFactory {
     public Bitmap TileNotMovable;
     public Bitmap TileStart;
     public Bitmap TileFinish;
+    public Bitmap TorchLight;
     public Bitmap Character;
 
     public Paint paint;
 
-    public static int TILESIZE = 32;
-    public static int TILENUMBER = 9;
+    public static final int TILESIZE = 32;
+    public static final int TILENUMBER = 9;
     private static myFactory ourInstance = new myFactory();
 
     public static myFactory getInstance() {
@@ -92,16 +93,35 @@ public class myFactory {
     {
         if(TileMovable!=null)
         {
-            TileMovable = getResizedBitmap(TileMovable,32,32);
+            TileMovable = getResizedBitmap(TileMovable,myFactory.TILESIZE,myFactory.TILESIZE);
         }
         if(TileNotMovable!=null)
         {
-            TileNotMovable = getResizedBitmap(TileNotMovable,32,32);
+            TileNotMovable = getResizedBitmap(TileNotMovable,myFactory.TILESIZE,myFactory.TILESIZE);
         }
         if(Character!=null)
         {
-            Character = getResizedBitmap(Character,32,32);
+            Character = getResizedBitmap(Character,myFactory.TILESIZE,myFactory.TILESIZE);
         }
+        if(TorchLight!=null)
+        {
+            TorchLight = getResizedBitmap(TorchLight,myFactory.TILESIZE,myFactory.TILESIZE);
+        }
+
+    }
+
+    public int [][] get_MovementMap(Tile [][]tiles)
+    {
+        int temp [][] = new int [tiles.length] [tiles[0].length];
+
+        for(int i=0;i<tiles.length;i++)
+        {
+            for(int y=0;y<tiles[0].length;y++)
+            {
+                temp[i][y]= tiles[i][y].define;
+            }
+        }
+        return temp;
     }
 
 

@@ -14,8 +14,7 @@ public class LevelMap implements Serializable {
     public String mapName;
     public Tile tiles [][];  //tile [height][width]
 
-    public int tileNumber;
-    int tileSize; // tile size for width and height
+   //public int tileNumber;
     boolean generatedMap = false;
 
     ArrayList<MyPoint> starts = new ArrayList<MyPoint>();    // start tiles
@@ -30,8 +29,7 @@ public class LevelMap implements Serializable {
         tiles = Tiles;
         //width = Width;
         //height = Height;
-        this.tileNumber = tileNumber;
-        tileSize = TileSize;
+//        this.tileNumber = tileNumber;
 
 
     }
@@ -39,20 +37,21 @@ public class LevelMap implements Serializable {
     public LevelMap (LevelMap lm)
     {
 
+        this.mapName = lm.mapName;
         this.tiles = lm.tiles;
         //this.width = lm.width;
-        this.tileNumber = lm.tileNumber;
+        //this.tileNumber = lm.tileNumber;
         //this.height = lm.height;
-        this.tileSize = lm.tileSize;
+        //this.tileSize = lm.tileSize;
 
         this.mapName = lm.mapName;
     }
 
     public  void createMap()
     {
-        for(int i=0;i<tileNumber;i++)
+        for(int i=0;i<tiles.length;i++)
         {
-            for(int y=0;y<tileNumber;y++)
+            for(int y=0;y<tiles[0].length;y++)
             {
 
                 if(tiles[i][y].define == 2)
@@ -94,11 +93,11 @@ public class LevelMap implements Serializable {
 
         int x = location.x;
         int y = location.y;
-        Tile[][] temp = new Tile[9][9];
+        Tile[][] temp = new Tile[myFactory.TILESIZE][myFactory.TILESIZE];
 
-        for(int i=0;i<9;i++)
+        for(int i=0;i<myFactory.TILESIZE;i++)
         {
-            for(int z=0;z<9;z++)
+            for(int z=0;z<myFactory.TILESIZE;z++)
             {
                 temp[i][z] = this.tiles[x+i][y+z];
             }

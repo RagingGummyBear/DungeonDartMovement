@@ -14,6 +14,7 @@ public class Level implements Runnable{
     public CameraControl cameraControl;
     public MainCharacter mainCharacter;
     public PackedLevel packedLevel;
+    public TorchLight torchLight;
 
     //public EvilMonster evilMonster;
 
@@ -47,34 +48,24 @@ public class Level implements Runnable{
         //Information for camera
 
         double cameraZoom;
-        double tileSize;
-        int numTiles;
         int screenSize;
-        int movementSpeed;
         if(screenHeight > screenWidth)
             screenSize = screenWidth;
                 else
             screenSize = screenHeight;
 
-        numTiles = 9;
+        cameraZoom =  (float)screenSize / (float)(myFactory.TILESIZE * myFactory.TILENUMBER);
 
-        tileSize = (double)screenSize/numTiles;
-
-        cameraZoom =  (float)screenSize / (float)(tileSize * 9);
-
-        movementSpeed = mainCharacter.speed ;
-
-        cameraControl = new CameraControl(cameraZoom,cameraZoom,tileSize,levelMap.start,movementSpeed);
+        cameraControl = new CameraControl(cameraZoom,cameraZoom,myFactory.TILESIZE,levelMap.start,difficulty.playerSpeed);
         cameraControl.levelMap = levelMap;
         cameraControl.tiles = levelMap.getShowingTiles(levelMap.start);
 
         // CreateMonster
 
         System.out.println("GENERATING FINISHED");
-        // public PackedLevel(Difficulty difficulty, LevelMap levelMap, CameraControl cameraControl, MainCharacter mainCharacter)
-
-        //ke treba da se dodade i evilMonster
-        packedLevel = new PackedLevel(difficulty,levelMap,cameraControl,mainCharacter);
+        // public PackedLevel(Difficulty difficulty, LevelMap levelMap, CameraControl cameraControl, MainCharacter mainCharacter,TorchLight, torchLight)
+        torchLight = new TorchLight((float)difficulty.torchDecrease,difficulty.torchLightLifeDecrease);
+        packedLevel = new PackedLevel(difficulty,levelMap,cameraControl,mainCharacter,torchLight);
 
 
         running=false;
