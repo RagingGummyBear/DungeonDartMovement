@@ -2,6 +2,10 @@ package com.grizzlypenguins.dungeondart.Activities;
 
 import android.app.Activity;
 import android.graphics.Canvas;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,11 +15,16 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.grizzlypenguins.dungeondart.PackedLevel;
 import com.grizzlypenguins.dungeondart.R;
 
-public class GamePlayActivity extends Activity {
+public class GamePlayActivity extends Activity implements SensorEventListener {
+
+
+    private SensorManager sensorManager;
+    private long lastUpdate;
 
     Button move_up;
     Button move_down;
@@ -33,11 +42,12 @@ public class GamePlayActivity extends Activity {
 
         // set up full screen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         setContentView(R.layout.activity_game_play);
+
 
         initialize();
         set_listeners();
+
 
 
 
@@ -71,12 +81,15 @@ public class GamePlayActivity extends Activity {
     void initialize()
     {
         level = (PackedLevel) getIntent().getSerializableExtra("PackedLevel");
-        gamePanel = (GamePanel)findViewById(R.id.GamePanel);
+        gamePanel = (GamePanel) findViewById(R.id.GamePanel);
         move_up = (Button)findViewById(R.id.moveUp);
         move_down = (Button)findViewById(R.id.moveDown);
         move_left = (Button)findViewById(R.id.moveLeft);
         move_right = (Button)findViewById(R.id.moveRight);
         gamePanel.level = level;
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        lastUpdate = System.currentTimeMillis();
+
     }
     void set_listeners()
     {
@@ -152,4 +165,64 @@ public class GamePlayActivity extends Activity {
             }
         });
     }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
+        {
+            getAccelerometer(event);
+        }
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+
+    private void getAccelerometer(SensorEvent event) {
+        float[] values = event.values;
+        // Movement
+        float x = values[0];
+        float y = values[1];
+        float z = values[2];
+
+        float accelationSquareRoot = (x * x + y * y+z*z)
+                / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
+        long actualTime = event.timestamp;
+        if (accelationSquareRoot >= 3) //
+        {
+            if (actualTime - lastUpdate < 200) {
+                return;
+            }
+            lastUpdate = actualTime;
+            //Toast.makeText(this, "Device was shuffed", Toast.LENGTH_SHORT).show();
+            gamePanel.shake_shake();
+        }
+    }
+
+    /**
+     * Mora da se popolnat za da imame oporavuvanje od pad
+     * t.e. da se stavi vo bundle packedLevel
+     */
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // register this class as a listener for the orientation and
+        // accelerometer sensors
+        sensorManager.registerListener(this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        // unregister listener
+        super.onPause();
+        sensorManager.unregisterListener(this);
+    }
+
 }

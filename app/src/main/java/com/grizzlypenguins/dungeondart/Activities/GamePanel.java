@@ -116,7 +116,18 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void tick(){
-        level.tick();
+        try {
+            level.tick();
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            this.myGameLoop.setRunning(false);
+        }
+    }
+
+    public void shake_shake()
+    {
+        level.shake_shake();
     }
 
     public void pressedButton(String s)

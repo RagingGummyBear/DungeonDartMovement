@@ -116,7 +116,7 @@ public class MainMenu extends Activity {
                 Intent myIntent = new Intent(MainMenu.this,
                         GamePlayActivity.class);
                 Difficulty dif = new Difficulty((int) ratingBar.getRating());
-                System.out.println("The number of stars : " + ratingBar.getNumStars());
+
                 startNewLevel = new Level(dif, myFactory.getInstance().test_map_1(),window.getDecorView().getWidth(),window.getDecorView().getHeight());
                 startNewLevel.start();
 
@@ -124,10 +124,12 @@ public class MainMenu extends Activity {
                 myFactory.getInstance().TileMovable = BitmapFactory.decodeResource(getResources(), R.drawable.movabletile);
                 myFactory.getInstance().Character = BitmapFactory.decodeResource(getResources(),R.drawable.character);
                 myFactory.getInstance().TorchLight = BitmapFactory.decodeResource(getResources(),R.drawable.beginingfog);
+                myFactory.getInstance().TileStart = BitmapFactory.decodeResource(getResources(),R.drawable.choosenstart);
+                myFactory.getInstance().TileFinish = BitmapFactory.decodeResource(getResources(),R.drawable.finishworking);
+                myFactory.getInstance().TileNFinish = BitmapFactory.decodeResource(getResources(),R.drawable.finishnotworking);
                 myFactory.getInstance().resize();
 
                 while(startNewLevel.running){
-
                 }
                 myIntent.putExtra("PackedLevel",startNewLevel.packedLevel);
                 startActivity(myIntent);

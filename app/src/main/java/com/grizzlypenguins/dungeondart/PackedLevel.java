@@ -29,8 +29,7 @@ public class PackedLevel implements Serializable {
         this.torchLight = torchLight;
     }
 
-   public void tick()
-    {
+   public void tick() throws Exception {
         torchLight.tick();
         mainCharacter.tick();
         cameraControl.tick();
@@ -48,5 +47,11 @@ public class PackedLevel implements Serializable {
         mainCharacter.render(c);
         torchLight.render(c);
 
+    }
+
+    public void shake_shake()
+    {
+
+        torchLight.shake_shake();
     }
 }

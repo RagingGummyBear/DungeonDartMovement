@@ -14,6 +14,7 @@ public class TorchLight implements Serializable {
     int timeToDecrease = 100;
     int counter = 2;
     public float life=100;
+    float lightIt = (float) 0.5;
     float damage = 1;
 
 
@@ -37,28 +38,62 @@ public class TorchLight implements Serializable {
 
     }
 
-    public boolean increaseLight(float f)
+    public boolean shake_shake()
     {
-        intensity+=f;
+        intensity+=lightIt;
 
-        if(intensity>=(int)(myFactory.TILENUMBER/2)-2)
+        if(intensity>=Math.floor(myFactory.TILENUMBER / 2)-2)
         {
             life-=damage;
-           if(intensity>=(myFactory.TILENUMBER/2)) intensity = myFactory.TILENUMBER;
+           if(intensity>(myFactory.TILENUMBER/2))
+               intensity = (myFactory.TILENUMBER/2);
             return true;
         }
         else
             return false;
     }
 
+
     public void render(Canvas c)
     {
         int start = (int) Math.floor(myFactory.TILENUMBER / 2);
         start ++;
+        if(intensity <= 0)
+        {
+            c.drawBitmap(myFactory.getInstance().TorchLight, start * myFactory.TILESIZE, start * myFactory.TILESIZE, myFactory.getInstance().paint);
+        }
         int end = start;
         //--end;
         start -= intensity;
         end += intensity;
+
+        if(start<0 || end >= myFactory.TILENUMBER) {
+            start = 0 ; end = myFactory.TILENUMBER;
+            for (int i = 0; i < myFactory.TILENUMBER; i++) {
+                for (int y = 0; y < myFactory.TILENUMBER; y++) {
+                    if (i == start) {
+
+                        c.drawBitmap(myFactory.getInstance().TorchLight, y * myFactory.TILESIZE, i * myFactory.TILESIZE, myFactory.getInstance().paint);
+
+                    } else {
+                        if (i == end - 1) {
+
+                            c.drawBitmap(myFactory.getInstance().TorchLight, y * myFactory.TILESIZE, i * myFactory.TILESIZE, myFactory.getInstance().paint);
+
+                        } else {
+
+                            c.drawBitmap(myFactory.getInstance().TorchLight, start * myFactory.TILESIZE, i * myFactory.TILESIZE, myFactory.getInstance().paint);
+                            c.drawBitmap(myFactory.getInstance().TorchLight, (end - 1) * myFactory.TILESIZE, i * myFactory.TILESIZE, myFactory.getInstance().paint);
+                            y = end;
+
+                        }
+                    }
+
+                }
+            }
+            return;
+        }
+
 
         for(int i=start;i<end;i++)
         {

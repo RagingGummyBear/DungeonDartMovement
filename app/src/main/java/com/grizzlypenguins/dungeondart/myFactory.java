@@ -14,6 +14,7 @@ public class myFactory {
     public Bitmap TileNotMovable;
     public Bitmap TileStart;
     public Bitmap TileFinish;
+    public Bitmap TileNFinish;
     public Bitmap TorchLight;
     public Bitmap Character;
 
@@ -38,10 +39,9 @@ public class myFactory {
 
     public LevelMap test_map_1()
     {
-        int tileNum = 120;
-        int tileSize = 32;
+        int tileNum = 30;
         //(Tile Tiles [][],int tileNumber, int TileSize,String mapName)
-        return new LevelMap(test_Tiles_1(tileNum),tileNum,tileSize,"TestMap1");
+        return new LevelMap(test_Tiles_1(tileNum),"TestMap1");
     }
 
     public Tile test_tile_1()
@@ -58,16 +58,16 @@ public class myFactory {
             for(int y=0; y < tileNumber ; y++)
             {
               //public Tile(int move, int pu, int t)
-                temp[i][y] = new Tile(Rand.getInstance().random.nextInt(4),0,0);
-
+               if(i>10 && i <tileNumber-10 && y>10 && y<tileNumber-10) temp[i][y] = new Tile(Rand.getInstance().random.nextInt(4),0,0);
+                else
+               {
+                   temp[i][y] = new Tile(0,0,0);
+               }
             }
         }
 
         return temp;
     }
-
-
-
 
     // function used from stackoverflow for scaling bitmaps
 
@@ -106,6 +106,18 @@ public class myFactory {
         if(TorchLight!=null)
         {
             TorchLight = getResizedBitmap(TorchLight,myFactory.TILESIZE,myFactory.TILESIZE);
+        }
+        if(TileStart!=null)
+        {
+            TileStart = getResizedBitmap(TileStart,myFactory.TILESIZE,myFactory.TILESIZE);
+        }
+        if(TileFinish!=null)
+        {
+            TileFinish = getResizedBitmap(TileFinish,myFactory.TILESIZE,myFactory.TILESIZE);
+        }
+        if(TileNFinish!=null)
+        {
+            TileNFinish = getResizedBitmap(TileNFinish,myFactory.TILESIZE,myFactory.TILESIZE);
         }
 
     }

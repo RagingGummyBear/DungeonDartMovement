@@ -39,7 +39,13 @@ public class Level implements Runnable{
         //Difficulty
         difficulty.calculateDifficulty();
         //Creation of LevelMap, with
-        levelMap.createMap();
+        try{
+            levelMap.createMap();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
 
         //Create the character
 
@@ -60,14 +66,15 @@ public class Level implements Runnable{
         cameraControl.levelMap = levelMap;
         cameraControl.tiles = levelMap.getShowingTiles(levelMap.start);
 
+
         // CreateMonster
 
-        System.out.println("GENERATING FINISHED");
+
         // public PackedLevel(Difficulty difficulty, LevelMap levelMap, CameraControl cameraControl, MainCharacter mainCharacter,TorchLight, torchLight)
         torchLight = new TorchLight((float)difficulty.torchDecrease,difficulty.torchLightLifeDecrease);
         packedLevel = new PackedLevel(difficulty,levelMap,cameraControl,mainCharacter,torchLight);
 
-
+        System.out.println("GENERATING FINISHED");
         running=false;
         try {
             thread.join();

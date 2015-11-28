@@ -40,8 +40,6 @@ public class CameraControl implements Serializable {
         tileSize = myFactory.TILESIZE;
         speed = playerMovement;
         this.playerMovement = 0;
-
-
         player_position = new MyPoint(poz.x,poz.y);
         this.scaleX = scaleX;
         this.scaleY = scaleY;
@@ -157,16 +155,29 @@ public class CameraControl implements Serializable {
         }
     }
 
-    public void calculateShadow(int intensity)
-    {
+    public void calculateShadow(int intensity) throws Exception {
+
         Math.floor(intensity);
+        if(tiles == null)
+        {
+            throw  new Exception("The tiles are null in CameraControl, The location of the player x:" +player_position.x + " y: "+player_position.y);
+        }
         int start = (int) Math.floor(myFactory.TILENUMBER / 2);
         //start++;
         int end = start;
-       // end-=2;
-       // end++;
+        // end-=2;
+        // end++;
         start -= intensity;
         end += intensity;
+        if (start < 0 || end >= myFactory.TILENUMBER){
+            for (int i = 0; i < myFactory.TILENUMBER; i++) {
+                for (int y = 0; y < myFactory.TILENUMBER; y++) {
+                    tiles[i][y].shadow = false;
+                }
+
+            }
+        return;
+    }
 
         for(int i=0;i<myFactory.TILENUMBER;i++)
         {

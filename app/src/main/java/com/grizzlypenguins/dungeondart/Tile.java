@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class Tile implements Serializable {
 
 
-    public int define;  //defines the tile with : 0 wall,1 movable,2 start,3 finish
+    public int define;  //defines the tile with : 0 wall,1 movable,2 start,3 finish, 4 choosenStart,5 working exit, 6 not working exit
     private int powerUp = 0; // powerUp = 0 , no powerup on that tile
     private int trap = 0;   // trap = 0, no traps on that Tile trap<0 used trap
     public boolean shadow = false;
@@ -63,11 +63,13 @@ public class Tile implements Serializable {
     {
         if(shadow)
         {
+
             /*
             Paint mpaint = myFactory.getInstance().paint;
             mpaint.setColor(Color.BLACK);
             c.drawRect(x, y, myFactory.TILESIZE, myFactory.TILESIZE, mpaint);
             */
+            
         }
         else
             switch (define)
@@ -80,12 +82,16 @@ public class Tile implements Serializable {
                 c.drawBitmap(myFactory.getInstance().TileMovable,x,y,myFactory.getInstance().paint);
                 break;
             }
-            case 2:{
-                c.drawBitmap(myFactory.getInstance().TileMovable,x,y,myFactory.getInstance().paint);
+            case 4:{
+                c.drawBitmap(myFactory.getInstance().TileStart,x,y,myFactory.getInstance().paint);
                 break;
             }
-            case 3:{
-                c.drawBitmap(myFactory.getInstance().TileMovable,x,y,myFactory.getInstance().paint);
+            case 5:{
+                c.drawBitmap(myFactory.getInstance().TileFinish,x,y,myFactory.getInstance().paint);
+                break;
+            }
+            case 6:{
+                c.drawBitmap(myFactory.getInstance().TileNFinish,x,y,myFactory.getInstance().paint);
                 break;
             }
             default:{
