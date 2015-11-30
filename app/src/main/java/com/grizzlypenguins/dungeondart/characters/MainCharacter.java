@@ -1,8 +1,11 @@
 package com.grizzlypenguins.dungeondart.characters;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 
 import com.grizzlypenguins.dungeondart.Level;
+import com.grizzlypenguins.dungeondart.PackedLevel;
 import com.grizzlypenguins.dungeondart.effects.Effect;
 import com.grizzlypenguins.dungeondart.MyPoint;
 import com.grizzlypenguins.dungeondart.myFactory;
@@ -23,6 +26,11 @@ public class MainCharacter implements Serializable {
     boolean standby = false;
     public boolean alive = false;
 
+    public boolean stunned = false;
+    public boolean slowed = false;
+
+
+
     public ArrayList<Effect> effects = new ArrayList<Effect>();
 
 
@@ -35,6 +43,7 @@ public class MainCharacter implements Serializable {
 
     public void tick () // da se aktiviraat powerUps-ot t.e. effectite od powerUps i Traps
     {
+        /*
         for(int i=0;i<effects.size();i++)
         {
             effects.get(i).tick();
@@ -43,15 +52,15 @@ public class MainCharacter implements Serializable {
                 effects.remove(i);
             }
         }
+        */
     }
 
-    public void render(Canvas c)
-    {
+    public void render(Canvas c) {
 
-        float x = (int)(myFactory.TILENUMBER/2)*myFactory.TILESIZE;
+        float x = (int) (myFactory.TILENUMBER / 2) * myFactory.TILESIZE;
         float y = x;
-        c.drawBitmap(myFactory.getInstance().Character,x,y,myFactory.getInstance().paint);
-        if(alive) {
+        c.drawBitmap(myFactory.getInstance().Character, x, y, myFactory.getInstance().paint);
+        if (alive) {
             if (moves) {
 
                 num_of_animation++;
@@ -93,14 +102,17 @@ public class MainCharacter implements Serializable {
                 }
 
             }
-        }
-        else
-        {
+        } else {
 
         }
 
+        if (stunned) {
+            c.drawBitmap(myFactory.getInstance().TrapR, x, y, myFactory.getInstance().paint);
+        }
+        if (slowed) {
+            c.drawBitmap(myFactory.getInstance().TrapY, x, y, myFactory.getInstance().paint);
+        }
 
     }
-
 
 }

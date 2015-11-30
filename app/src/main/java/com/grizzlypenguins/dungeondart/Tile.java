@@ -4,6 +4,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.grizzlypenguins.dungeondart.effects.PowerUpMovementSpeed;
+import com.grizzlypenguins.dungeondart.effects.PowerUpsAndTrapsBank;
+
 import java.io.Serializable;
 
 /**
@@ -45,61 +48,50 @@ public class Tile implements Serializable {
     }
     public int use_trap()
     {
-        if(trap == 0)
-            return 0;
-        if(trap>0) {
-            int temp = trap;
-            trap *= -1;
-            return temp;
-        }
-        else
-        {
-            return trap;
-        }
-
+        int temp = trap;
+        trap = 0;
+        return temp;
     }
 
-    public void render(Canvas c,float x, float y)
-    {
-        if(shadow)
-        {
+    public void render(Canvas c,float x, float y) {
+        if (shadow) {
 
+            return;
             /*
             Paint mpaint = myFactory.getInstance().paint;
             mpaint.setColor(Color.BLACK);
             c.drawRect(x, y, myFactory.TILESIZE, myFactory.TILESIZE, mpaint);
             */
-            
+
         }
-        else
-            switch (define)
-        {
-            case 0:{
-                c.drawBitmap(myFactory.getInstance().TileNotMovable,x,y,myFactory.getInstance().paint);
-                break;
+        switch (define) {
+                case 0: {
+                    c.drawBitmap(myFactory.getInstance().TileNotMovable, x, y, myFactory.getInstance().paint);
+                    break;
+                }
+                case 1: {
+                    c.drawBitmap(myFactory.getInstance().TileMovable, x, y, myFactory.getInstance().paint);
+                    break;
+                }
+                case 4: {
+                    c.drawBitmap(myFactory.getInstance().TileStart, x, y, myFactory.getInstance().paint);
+                    break;
+                }
+                case 5: {
+                    c.drawBitmap(myFactory.getInstance().TileFinish, x, y, myFactory.getInstance().paint);
+                    break;
+                }
+                case 6: {
+                    c.drawBitmap(myFactory.getInstance().TileNFinish, x, y, myFactory.getInstance().paint);
+                    break;
+                }
+                default: {
+                    c.drawBitmap(myFactory.getInstance().TileMovable, x, y, myFactory.getInstance().paint);
+                    break;
+                }
             }
-            case 1:{
-                c.drawBitmap(myFactory.getInstance().TileMovable,x,y,myFactory.getInstance().paint);
-                break;
-            }
-            case 4:{
-                c.drawBitmap(myFactory.getInstance().TileStart,x,y,myFactory.getInstance().paint);
-                break;
-            }
-            case 5:{
-                c.drawBitmap(myFactory.getInstance().TileFinish,x,y,myFactory.getInstance().paint);
-                break;
-            }
-            case 6:{
-                c.drawBitmap(myFactory.getInstance().TileNFinish,x,y,myFactory.getInstance().paint);
-                break;
-            }
-            default:{
-                c.drawBitmap(myFactory.getInstance().TileMovable,x,y,myFactory.getInstance().paint);
-                break;
-            }
-        }
+
+            PowerUpsAndTrapsBank.getInstance().renderTrap(c,x,y,trap);
+            PowerUpsAndTrapsBank.getInstance().renderPowerUp(c,x,y,powerUp);
     }
-
-
 }

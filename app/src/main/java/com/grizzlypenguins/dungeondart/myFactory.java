@@ -5,11 +5,20 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 
+import com.grizzlypenguins.dungeondart.effects.PowerUpBonusPoints;
+import com.grizzlypenguins.dungeondart.effects.PowerUpMovementSpeed;
+import com.grizzlypenguins.dungeondart.effects.PowerUpTorchHealth;
+import com.grizzlypenguins.dungeondart.effects.TrapLowerTorch;
+import com.grizzlypenguins.dungeondart.effects.TrapSlow;
+import com.grizzlypenguins.dungeondart.effects.TrapStun;
+
 /**
  * Created by Darko on 16.11.2015.
  */
 public class myFactory {
+
     Rand rand = Rand.getInstance();
+
     public Bitmap TileMovable;
     public Bitmap TileNotMovable;
     public Bitmap TileStart;
@@ -18,11 +27,22 @@ public class myFactory {
     public Bitmap TorchLight;
     public Bitmap Character;
 
+    public Bitmap PowerUpR; //speed
+    public Bitmap PowerUpB; //torchHealth
+    public Bitmap PowerUpG; //higherTorchIntensity
+    public Bitmap PowerUpP; //stunMonster
+    public Bitmap PowerUpY; //bonus points
+
+    public Bitmap TrapR; //Stun
+    public Bitmap TrapY; //Slow
+    public Bitmap TrapB; //lowerTorch
+
     public Paint paint;
 
     public static final int TILESIZE = 32;
     public static final int TILENUMBER = 9;
     private static myFactory ourInstance = new myFactory();
+
 
     public static myFactory getInstance() {
         return ourInstance;
@@ -33,7 +53,6 @@ public class myFactory {
         paint.setAntiAlias(false);
         paint.setDither(true);
         paint.setFilterBitmap(false);
-
 
     }
 
@@ -58,7 +77,7 @@ public class myFactory {
             for(int y=0; y < tileNumber ; y++)
             {
               //public Tile(int move, int pu, int t)
-               if(i>10 && i <tileNumber-10 && y>10 && y<tileNumber-10) temp[i][y] = new Tile(Rand.getInstance().random.nextInt(4),0,0);
+               if(i>10 && i <tileNumber-10 && y>10 && y<tileNumber-10) temp[i][y] = new Tile(Rand.getInstance().random.nextInt(4),Rand.getInstance().random.nextInt(6),Rand.getInstance().random.nextInt(6));
                 else
                {
                    temp[i][y] = new Tile(0,0,0);
@@ -68,6 +87,9 @@ public class myFactory {
 
         return temp;
     }
+
+
+
 
     // function used from stackoverflow for scaling bitmaps
 
@@ -120,6 +142,42 @@ public class myFactory {
             TileNFinish = getResizedBitmap(TileNFinish,myFactory.TILESIZE,myFactory.TILESIZE);
         }
 
+        if(PowerUpR!=null)
+        {
+            PowerUpR = getResizedBitmap(PowerUpR,myFactory.TILESIZE,myFactory.TILESIZE);
+        }
+        if(PowerUpB!=null)
+        {
+            PowerUpB = getResizedBitmap(PowerUpB,myFactory.TILESIZE,myFactory.TILESIZE);
+        }
+        if(PowerUpG!=null)
+        {
+            PowerUpG = getResizedBitmap(PowerUpG,myFactory.TILESIZE,myFactory.TILESIZE);
+        }
+        if(PowerUpY!=null)
+        {
+            PowerUpY = getResizedBitmap(PowerUpY,myFactory.TILESIZE,myFactory.TILESIZE);
+        }
+        if(PowerUpP!=null)
+        {
+            PowerUpP = getResizedBitmap(PowerUpP,myFactory.TILESIZE,myFactory.TILESIZE);
+        }
+        if(TrapR!=null)
+        {
+            TrapR = getResizedBitmap(TrapR,myFactory.TILESIZE,myFactory.TILESIZE);
+        }
+        if(TrapY!=null)
+        {
+            TrapY = getResizedBitmap(TrapY,myFactory.TILESIZE,myFactory.TILESIZE);
+        }
+
+        if(TrapB!=null)
+        {
+            TrapB = getResizedBitmap(TrapB,myFactory.TILESIZE,myFactory.TILESIZE);
+        }
+
+
+
     }
 
     public int [][] get_MovementMap(Tile [][]tiles)
@@ -136,6 +194,31 @@ public class myFactory {
         return temp;
     }
 
+
+    public TrapStun newTrapStun()
+    {
+        return new TrapStun(100,"PlayerStun",false);
+    }
+    public TrapSlow newTrapSlow()
+    {
+        return new TrapSlow(200,"PlayerSlow",false);
+    }
+    public TrapLowerTorch newTrapLowerTorch()
+    {
+        return new TrapLowerTorch(1,"TrapLowerTorch",false);
+    }
+
+
+    public PowerUpMovementSpeed newPowerUpMovementSpeed()
+    {
+        return new PowerUpMovementSpeed(500,"PlayerMovementSpeed",false);
+    }
+    public PowerUpBonusPoints newPowerUpBonusPoints() {
+        return new PowerUpBonusPoints(1,"PowerUpBonusPoints",false);
+    }
+    public PowerUpTorchHealth newPowerUpTorchHealth() {
+        return new PowerUpTorchHealth(1,"PowerUpTorchHealth",false);
+    }
 
 
 }

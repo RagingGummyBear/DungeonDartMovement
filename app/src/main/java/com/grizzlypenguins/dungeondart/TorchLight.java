@@ -31,7 +31,10 @@ public class TorchLight implements Serializable {
        {
            intensity-=decrease;
            counter = timeToDecrease;
-           if(intensity<=0)intensity = 0;
+           if(intensity<=0){
+               intensity = 0;
+               life-=damage*0.70;
+           }
        }
         else
            --counter;
@@ -44,7 +47,7 @@ public class TorchLight implements Serializable {
 
         if(intensity>=Math.floor(myFactory.TILENUMBER / 2)-2)
         {
-            life-=damage;
+            life-=(damage*0.80);
            if(intensity>(myFactory.TILENUMBER/2))
                intensity = (myFactory.TILENUMBER/2);
             return true;
@@ -60,7 +63,8 @@ public class TorchLight implements Serializable {
         start ++;
         if(intensity <= 0)
         {
-            c.drawBitmap(myFactory.getInstance().TorchLight, start * myFactory.TILESIZE, start * myFactory.TILESIZE, myFactory.getInstance().paint);
+            //c.drawBitmap(myFactory.getInstance().TorchLight, start * myFactory.TILESIZE, start * myFactory.TILESIZE, myFactory.getInstance().paint);
+            intensity = 0;
         }
         int end = start;
         //--end;

@@ -52,22 +52,20 @@ public class MyGameLoop extends Thread {
             {
 
                 timer += 1000;
-                System.out.println("FPS: "+ frames);
                 frames = 0;
             }
-            if(System.currentTimeMillis()-timer2>300)
-            {
-                timer+=300;
-                //handler.tickSec();
-            }
+
         }
 
 
     }
+
     void tick()
     {
+
         view.tick();
     }
+
     void render()
     {
         Canvas c = null;

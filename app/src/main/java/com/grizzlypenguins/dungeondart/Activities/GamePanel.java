@@ -13,8 +13,10 @@ import android.view.SurfaceView;
 
 import com.grizzlypenguins.dungeondart.GameLoop.MyGameLoop;
 import com.grizzlypenguins.dungeondart.PackedLevel;
+import com.grizzlypenguins.dungeondart.PlayerScoring;
 import com.grizzlypenguins.dungeondart.R;
 import com.grizzlypenguins.dungeondart.Tile;
+import com.grizzlypenguins.dungeondart.effects.PowerUpsAndTrapsBank;
 import com.grizzlypenguins.dungeondart.myFactory;
 
 import javax.security.auth.callback.Callback;
@@ -29,6 +31,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     boolean runnable= false;
     boolean flipflop= true;
     float canvasZoom = 0;
+    boolean gameFinished = false;
 
 
     Tile test;
@@ -57,6 +60,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         myGameLoop = new MyGameLoop(this);
         test = myFactory.getInstance().test_tile_1();
+
        // this.setFocusable(true);
         runnable = true;
 
@@ -68,8 +72,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         if(runnable)
         {
-
-
             double surfaceSize = 0;
             if(this.getHeight()<this.getWidth())
             {
@@ -81,10 +83,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             }
 
             double scale =  surfaceSize/(myFactory.TILENUMBER * myFactory.TILESIZE);
-            System.out.print("THE scale is wrong , or the srufaceview"+scale + " THE VIEWSIZE : " + surfaceSize);
             canvasZoom = (float) scale;
-
-
             this.start();
             runnable = false;
 
@@ -100,8 +99,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     }
     void start()
     {
+
         myGameLoop.setRunning(true);
         myGameLoop.start();
+        level.playerScoring.setStartTime(System.nanoTime()/1000000);
     }
 
     @Override
@@ -112,17 +113,21 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        myGameLoop.setRunning(false);
 
     }
 
     public void tick(){
         try {
             level.tick();
+
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
+          //  System.out.println(e.getMessage());
             this.myGameLoop.setRunning(false);
         }
+        PowerUpsAndTrapsBank.getInstance().tick();
+
     }
 
     public void shake_shake()
@@ -181,7 +186,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         paint.setColor(Color.CYAN);
         canvas.drawRect(33, 60, 77, 77, paint);
 
-
         if(flipflop)
         {
             paint.setColor(Color.YELLOW);
@@ -199,5 +203,16 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
           level.render(canvas);
         }
         canvas.restore();
+        if(level.gameFinished)this.finishGame();
     }
+
+    public void finishGame()
+    {
+        myGameLoop.setRunning(false);
+        level.finishGame();
+        gameFinished = true;
+        //GamePlayActivity.finishGame();
+    }
+
+
 }

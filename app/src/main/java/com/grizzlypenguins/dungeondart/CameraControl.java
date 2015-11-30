@@ -22,6 +22,7 @@ public class CameraControl implements Serializable {
     public MyPoint player_position;
     public int playerMovement=1;
     int speed=1;
+    public int boost=0;
 
     //Displaying Tiles
     Tile [][] tiles;
@@ -77,10 +78,9 @@ public class CameraControl implements Serializable {
 
         if(move_up || move_down || move_left || move_right) {
             if(playerMovement == 0) {
-                playerMovement = speed;
+                playerMovement = speed - boost;
                 if (move_left) {
                     if (movableTile(tiles[num - 1][num]))
-
                     {
                         player_position.x--;
                         moved = true;
@@ -88,7 +88,6 @@ public class CameraControl implements Serializable {
                     }
                 } else if (move_right) {
                     if (movableTile(tiles[num + 1][num]))
-
                     {
                         player_position.x++;
                         moved = true;
@@ -96,7 +95,6 @@ public class CameraControl implements Serializable {
                     }
                 } else if (move_down) {
                     if (movableTile(tiles[num][num + 1]))
-
                     {
                         player_position.y++;
                         moved = true;

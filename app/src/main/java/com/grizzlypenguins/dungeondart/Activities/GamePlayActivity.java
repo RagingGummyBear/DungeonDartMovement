@@ -1,12 +1,14 @@
 package com.grizzlypenguins.dungeondart.Activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -19,6 +21,8 @@ import android.widget.Toast;
 
 import com.grizzlypenguins.dungeondart.PackedLevel;
 import com.grizzlypenguins.dungeondart.R;
+
+import java.util.TimerTask;
 
 public class GamePlayActivity extends Activity implements SensorEventListener {
 
@@ -34,25 +38,32 @@ public class GamePlayActivity extends Activity implements SensorEventListener {
     PackedLevel level ;
     GamePanel gamePanel;
 
+    Handler timerHandler = new Handler();
+    Runnable timerRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+
+            if(gamePanel.gameFinished)
+                change_Activity();
+            timerHandler.postDelayed(this, 500);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // turn off title
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         // set up full screen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_game_play);
-
-
         initialize();
         set_listeners();
-
-
+        timerHandler.postDelayed(timerRunnable, 500);
 
 
         //System.out.println(level.cameraControl.player_position.x + " "+ level.difficulty.starNumber + " " +level.mainCharacter.speed + "  "+ level.levelMap.tileNumber );
-
     }
 
     @Override
@@ -89,6 +100,9 @@ public class GamePlayActivity extends Activity implements SensorEventListener {
         gamePanel.level = level;
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         lastUpdate = System.currentTimeMillis();
+
+
+
 
     }
     void set_listeners()
@@ -222,7 +236,24 @@ public class GamePlayActivity extends Activity implements SensorEventListener {
     protected void onPause() {
         // unregister listener
         super.onPause();
+        timerHandler.removeCallbacks(timerRunnable);
         sensorManager.unregisterListener(this);
     }
 
+    void change_Activity()
+    {
+
+        timerHandler.removeCallbacks(timerRunnable);
+        Intent myIntent = new Intent(GamePlayActivity.this,
+                MainMenu.class);
+        myIntent.putExtra("scoring", this.gamePanel.level.playerScoring);
+        MainMenuSettings mainMenuSettings = new MainMenuSettings();
+        mainMenuSettings.scoreScreen = true;
+        myIntent.putExtra("mainMenuSettings", mainMenuSettings);
+        startActivity(myIntent);
+    }
+
+
+
 }
+
