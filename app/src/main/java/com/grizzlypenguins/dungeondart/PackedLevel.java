@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import com.grizzlypenguins.dungeondart.CameraControl;
 import com.grizzlypenguins.dungeondart.Difficulty;
 import com.grizzlypenguins.dungeondart.LevelMap;
+import com.grizzlypenguins.dungeondart.characters.EvilMonster;
 import com.grizzlypenguins.dungeondart.characters.MainCharacter;
 import com.grizzlypenguins.dungeondart.effects.Effect;
 import com.grizzlypenguins.dungeondart.effects.PowerUpsAndTrapsBank;
@@ -24,21 +25,46 @@ public class PackedLevel implements Serializable {
     public CameraControl cameraControl;
     public MainCharacter mainCharacter;
     public TorchLight torchLight;
+    public EvilMonster evilMonster;
+
+
     public boolean gameFinished = false;
 
-    public PackedLevel(Difficulty difficulty, LevelMap levelMap, CameraControl cameraControl, MainCharacter mainCharacter,TorchLight torchLight) {
+    public PackedLevel(Difficulty difficulty, LevelMap levelMap, CameraControl cameraControl, MainCharacter mainCharacter,TorchLight torchLight,EvilMonster evilMonster) {
         this.difficulty = difficulty;
         this.levelMap = levelMap;
         this.cameraControl = cameraControl;
         this.mainCharacter = mainCharacter;
         this.torchLight = torchLight;
+        this.evilMonster = evilMonster;
         playerScoring = new PlayerScoring();
     }
 
    public void tick() throws Exception {
 
         torchLight.tick();
+       if(evilMonster.tick())
+       {
+           gameFinished = true;
+           mainCharacter.alive = false;
+           int temp1 = Math.abs(cameraControl.player_position.x - evilMonster.location.x);
+           int temp2 = Math.abs(cameraControl.player_position.y - evilMonster.location.y);
+           if(temp1 <4)
+           {
+               evilMonster.showing = true;
+           }
+           else
+               if(temp2 <4)
+               {
+                   evilMonster.showing = true;
+               }
+           else
+               {
+                   evilMonster.showing = false;
+               }
+       }
         mainCharacter.tick();
+
         Tile temp = cameraControl.tick();
        if(temp !=null )
        {
@@ -63,7 +89,7 @@ public class PackedLevel implements Serializable {
         {
             cameraControl.tiles = levelMap.getShowingTiles(cameraControl.player_position);
         }
-        cameraControl.calculateShadow((int) Math.floor(torchLight.intensity));
+       cameraControl.calculateShadow((int) Math.floor(torchLight.intensity));
 
       if(temp!=null) if(temp.define == 5){
            gameFinished = true;
@@ -74,6 +100,17 @@ public class PackedLevel implements Serializable {
     public void render (Canvas c)
     {
         cameraControl.render(c);
+        if(evilMonster.showing)
+        {
+            int temp1 = (cameraControl.player_position.x - evilMonster.location.x);
+            int temp2 = (cameraControl.player_position.y - evilMonster.location.y);
+            int plocation = (int) Math.floor(myFactory.TILENUMBER / 2);
+            plocation++;
+            temp1+=plocation;
+            temp2+=plocation;
+            evilMonster.render(c,temp1,temp2);
+
+        }
         mainCharacter.render(c);
         torchLight.render(c);
     }

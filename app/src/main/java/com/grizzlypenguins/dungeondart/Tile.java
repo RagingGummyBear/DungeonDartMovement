@@ -14,13 +14,11 @@ import java.io.Serializable;
  */
 public class Tile implements Serializable {
 
-
-    public int define;  //defines the tile with : 0 wall,1 movable,2 start,3 finish, 4 choosenStart,5 working exit, 6 not working exit
+    public int define;  //defines the tile with : 0 wall,1 movable,2 start,3 finish, 4 choosenStart,5 working exit, 6 not working exit, 7 monsterDen
     private int powerUp = 0; // powerUp = 0 , no powerup on that tile
     private int trap = 0;   // trap = 0, no traps on that Tile trap<0 used trap
     public boolean shadow = false;
     public int x,y;
-
 
     public Tile(int move, int pu, int t)
     {

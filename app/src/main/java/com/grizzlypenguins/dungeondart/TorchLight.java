@@ -60,7 +60,7 @@ public class TorchLight implements Serializable {
     public void render(Canvas c)
     {
         int start = (int) Math.floor(myFactory.TILENUMBER / 2);
-        start ++;
+        //start ++;
         if(intensity <= 0)
         {
             //c.drawBitmap(myFactory.getInstance().TorchLight, start * myFactory.TILESIZE, start * myFactory.TILESIZE, myFactory.getInstance().paint);
@@ -68,8 +68,10 @@ public class TorchLight implements Serializable {
         }
         int end = start;
         //--end;
-        start -= intensity;
-        end += intensity;
+        int temp = (int)Math.floor(intensity);
+        start -= temp;
+        end += temp;
+        end++;
 
         if(start<0 || end >= myFactory.TILENUMBER) {
             start = 0 ; end = myFactory.TILENUMBER;

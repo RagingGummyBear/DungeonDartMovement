@@ -197,7 +197,7 @@ public class MainMenu extends Activity {
                         GamePlayActivity.class);
                 Difficulty dif = new Difficulty((int) ratingBar.getRating());
 
-                startNewLevel = new Level(dif, myFactory.getInstance().test_map_1(),window.getDecorView().getWidth(),window.getDecorView().getHeight());
+                startNewLevel = new Level(dif, myFactory.getInstance().test_map_2(60),window.getDecorView().getWidth(),window.getDecorView().getHeight());
                 startNewLevel.start();
                 initializeBitmaps();
                 while(startNewLevel.running){
@@ -237,11 +237,13 @@ public class MainMenu extends Activity {
 
                 myFactory.getInstance().TileNotMovable = BitmapFactory.decodeResource(getResources(), R.drawable.notmovabletile);
                 myFactory.getInstance().TileMovable = BitmapFactory.decodeResource(getResources(), R.drawable.movabletile);
-                myFactory.getInstance().Character = BitmapFactory.decodeResource(getResources(),R.drawable.character);
                 myFactory.getInstance().TorchLight = BitmapFactory.decodeResource(getResources(),R.drawable.beginingfog);
                 myFactory.getInstance().TileStart = BitmapFactory.decodeResource(getResources(),R.drawable.choosenstart);
                 myFactory.getInstance().TileFinish = BitmapFactory.decodeResource(getResources(),R.drawable.finishworking);
                 myFactory.getInstance().TileNFinish = BitmapFactory.decodeResource(getResources(),R.drawable.finishnotworking);
+
+                myFactory.getInstance().EvilMonster = BitmapFactory.decodeResource(getResources(),R.drawable.evilmonster);
+                myFactory.getInstance().Character = BitmapFactory.decodeResource(getResources(),R.drawable.character);
 
                 myFactory.getInstance().PowerUpR = BitmapFactory.decodeResource(getResources(),R.drawable.powerupr);
                 myFactory.getInstance().PowerUpB = BitmapFactory.decodeResource(getResources(),R.drawable.powerupb);

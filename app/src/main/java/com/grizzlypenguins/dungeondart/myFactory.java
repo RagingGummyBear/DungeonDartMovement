@@ -5,12 +5,15 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 
+import com.grizzlypenguins.dungeondart.characters.MonsetNextStep;
 import com.grizzlypenguins.dungeondart.effects.PowerUpBonusPoints;
 import com.grizzlypenguins.dungeondart.effects.PowerUpMovementSpeed;
 import com.grizzlypenguins.dungeondart.effects.PowerUpTorchHealth;
 import com.grizzlypenguins.dungeondart.effects.TrapLowerTorch;
 import com.grizzlypenguins.dungeondart.effects.TrapSlow;
 import com.grizzlypenguins.dungeondart.effects.TrapStun;
+
+import java.util.Random;
 
 /**
  * Created by Darko on 16.11.2015.
@@ -25,7 +28,10 @@ public class myFactory {
     public Bitmap TileFinish;
     public Bitmap TileNFinish;
     public Bitmap TorchLight;
+
     public Bitmap Character;
+    public Bitmap EvilMonster;
+    public MonsetNextStep monsetNextStep;
 
     public Bitmap PowerUpR; //speed
     public Bitmap PowerUpB; //torchHealth
@@ -84,9 +90,85 @@ public class myFactory {
                }
             }
         }
-
         return temp;
     }
+
+    //defines the tile with : 0 wall,1 movable,2 start,3 finish, 4 choosenStart,5 working exit, 6 not working exit, 7 monsterDen
+    public Tile newStartTile()
+    {
+        return new Tile(3,Rand.getInstance().random.nextInt(10),Rand.getInstance().random.nextInt(10));
+    }
+
+    public Tile newFinishTile()
+    {
+        return new Tile(4,Rand.getInstance().random.nextInt(10),Rand.getInstance().random.nextInt(10));
+    }
+    public Tile newMovableTile()
+    {
+        return new Tile(0,Rand.getInstance().random.nextInt(20),Rand.getInstance().random.nextInt(20));
+    }
+
+    public Tile newMonsterDenTile()
+    {
+        return new Tile(7,0,0);
+    }
+
+    public Tile newWallTile()
+    {
+        return new Tile(0,0,0);
+    }
+
+    public LevelMap test_map_2(int i)
+    {
+        int tileNum = i;
+        //(Tile Tiles [][],int tileNumber, int TileSize,String mapName)
+        return new LevelMap(test_Tiles_2(120),"TestMap2");
+    }
+
+    public Tile[][] test_Tiles_2(int tileNumber)
+    {
+        Tile temp [] [] = new Tile[tileNumber][tileNumber];
+
+        for(int i=0;i<tileNumber;i++)
+        {
+            for(int y=0; y < tileNumber ; y++)
+            {
+                if(i>10 && i < tileNumber-10 && y>10 && y<tileNumber-10)
+                {
+                    temp[i][y] = newMovableTile();
+                }
+                else  temp[i][y] = newWallTile();
+                //public Tile(int move, int pu, int t)
+            }
+        }
+
+        int x,y;
+        tileNumber -= 20;
+        while(true) {
+            x = Rand.random.nextInt((tileNumber- 20) + 1) + 20;
+            y = Rand.random.nextInt((tileNumber - 20) + 1) + 20;
+            if (temp[x][y].define < 3) {
+                temp[x][y] = newStartTile();
+                break;
+            }
+        }  while(true) {
+        x = Rand.random.nextInt((tileNumber- 20) + 1) + 20;
+        y = Rand.random.nextInt((tileNumber - 20) + 1) + 20;
+        if (temp[x][y].define < 3) {
+            temp[x][y] = newFinishTile();
+            break;
+        }
+    }  while(true) {
+        x = Rand.random.nextInt((tileNumber- 20) + 1) + 20;
+        y = Rand.random.nextInt((tileNumber - 20) + 1) + 20;
+        if (temp[x][y].define < 3) {
+            temp[x][y] = newMonsterDenTile();
+            break;
+        }
+    }
+        return temp;
+    }
+
 
 
 
@@ -174,6 +256,10 @@ public class myFactory {
         if(TrapB!=null)
         {
             TrapB = getResizedBitmap(TrapB,myFactory.TILESIZE,myFactory.TILESIZE);
+        }
+        if(EvilMonster != null)
+        {
+            EvilMonster = getResizedBitmap(EvilMonster,myFactory.TILESIZE,myFactory.TILESIZE);
         }
 
 

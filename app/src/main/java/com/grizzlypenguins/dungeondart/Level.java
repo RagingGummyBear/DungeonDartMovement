@@ -1,5 +1,6 @@
 package com.grizzlypenguins.dungeondart;
 
+import com.grizzlypenguins.dungeondart.characters.EvilMonster;
 import com.grizzlypenguins.dungeondart.characters.MainCharacter;
 
 /**
@@ -68,11 +69,11 @@ public class Level implements Runnable{
 
 
         // CreateMonster
-
+        EvilMonster evilMonster = new EvilMonster(myFactory.getInstance().get_MovementMap(levelMap.tiles),levelMap.monsterStart,levelMap.start,difficulty.monsterSpeed);
 
         // public PackedLevel(Difficulty difficulty, LevelMap levelMap, CameraControl cameraControl, MainCharacter mainCharacter,TorchLight, torchLight)
         torchLight = new TorchLight((float)difficulty.torchDecrease,difficulty.torchLightLifeDecrease);
-        packedLevel = new PackedLevel(difficulty,levelMap,cameraControl,mainCharacter,torchLight);
+        packedLevel = new PackedLevel(difficulty,levelMap,cameraControl,mainCharacter,torchLight,evilMonster);
 
         System.out.println("GENERATING FINISHED");
         running=false;

@@ -19,8 +19,10 @@ public class LevelMap implements Serializable {
 
     ArrayList<MyPoint> starts = new ArrayList<MyPoint>();    // start tiles
     ArrayList<MyPoint> finishs = new ArrayList<MyPoint>();   //finish tiles
+    ArrayList<MyPoint> monsterStarts = new ArrayList<MyPoint>(); //monster start
     MyPoint start = new MyPoint(1,1);
     MyPoint end = new MyPoint(1,1);
+    MyPoint monsterStart = new MyPoint(1,1);
 
     public  LevelMap (Tile Tiles [][],String mapName)
     {
@@ -63,6 +65,10 @@ public class LevelMap implements Serializable {
                 {
                     finishs.add(new MyPoint(i, y));
                 }
+                if(tiles[i][y].define == 7)
+                {
+                    monsterStarts.add(new MyPoint(i,y));
+                }
 
             }
 
@@ -70,6 +76,7 @@ public class LevelMap implements Serializable {
 
        this.end = choose_End();
        this.start = choose_Start();
+        this.monsterStart = choose_monsterStart();
         if(!checkStartAndEnd())
         {
             throw new Exception("Couldn't find suitable start or end");
@@ -81,7 +88,7 @@ public class LevelMap implements Serializable {
 
     boolean checkStartAndEnd()
     {
-        boolean good1= false ,good2 = false;
+        boolean good1= false ,good2 = false,good3 = false;
         for(int i=0;i<starts.size();i++)
         {
                 Tile [][]temp = this.getShowingTiles(starts.get(i));
@@ -90,7 +97,7 @@ public class LevelMap implements Serializable {
                     good1 = true;
                     start = starts.get(i);
                     tiles[start.x][start.y].define=4;
-                    System.out.println("Tile x: "+ start.x + " Tile y:"+start.y +" keyword: banana");
+                    //System.out.println("Tile x: "+ start.x + " Tile y:"+start.y +" keyword: banana");
                     break;
                 }
         }
@@ -106,7 +113,19 @@ public class LevelMap implements Serializable {
             }
 
         }
-        return good1 && good2;
+        for(int i=0;i<finishs.size();i++)
+        {
+            Tile [][]temp = this.getShowingTiles(monsterStarts.get(i));
+            if(temp!=null)
+            {
+                good3 = true;
+                monsterStart = monsterStarts.get(i);
+                tiles[monsterStarts.get(i).x][monsterStarts.get(i).y].define = 5;
+                break;
+            }
+
+        }
+        return good1 && good2 && good3;
     }
 
     MyPoint choose_Start()
@@ -118,8 +137,14 @@ public class LevelMap implements Serializable {
     MyPoint choose_End()
     {
         Collections.shuffle(finishs);
-        for(int i=0;i<finishs.size();i++)tiles[finishs.get(i).x][finishs.get(i).y].define = 6;
+       // for(int i=0;i<finishs.size();i++)tiles[finishs.get(i).x][finishs.get(i).y].define = 6;
         return finishs.get(0);
+    }
+
+    MyPoint choose_monsterStart()
+    {
+        Collections.shuffle(monsterStarts);
+        return  monsterStarts.get(0);
     }
 
 
@@ -136,7 +161,7 @@ public class LevelMap implements Serializable {
         {
             for(int z=0;z<myFactory.TILENUMBER;z++)
             {
-               if(x+i<120 && y+z<120) temp[i][z] = this.tiles[x+i][y+z];
+               if(x+i<myFactory.TILENUMBER && y+z<myFactory.TILENUMBER && x+i >0 && y+z > 0) temp[i][z] = this.tiles[x+i][y+z];
                 else{
                     System.out.println("The location of the nulls x: " + x + " y:" + y + "  i:" + i + "  z: " +z);
                    return null;

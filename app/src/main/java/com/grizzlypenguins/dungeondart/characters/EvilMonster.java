@@ -1,18 +1,26 @@
 package com.grizzlypenguins.dungeondart.characters;
 
+import android.graphics.Canvas;
+
 import com.grizzlypenguins.dungeondart.effects.Effect;
 import com.grizzlypenguins.dungeondart.MyPoint;
+import com.grizzlypenguins.dungeondart.myFactory;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Darko on 21.11.2015.
  */
-public class EvilMonster {
+public class EvilMonster implements Serializable{
 
-    public boolean [][]movementMap;
+    public int [][]movementMap;
     public MyPoint location = new MyPoint(0,0);
     public MyPoint nextStep = new MyPoint(0,0);
+    public MyPoint playerLocation = new MyPoint(0,0);
+
+
+    private boolean runAlgo = false;
 
 
     public int speed;
@@ -24,97 +32,96 @@ public class EvilMonster {
 
     public ArrayList<Effect> effects = new ArrayList<Effect>();
 
-    public EvilMonster(MyPoint location, int speed,boolean [][]map) {
+    public EvilMonster(MyPoint location, int speed,int [][]map) {
 
         movementMap = map;
+
         this.location = location;
         this.speed = speed;
 
     }
 
-    public void tick()
-    {
-
-        for(int i=0;i<effects.size();i++)
-        {
-            effects.get(i).tick();
-            if(!effects.get(i).active)
-            {
-                effects.remove(i);
-            }
-        }
-        if(nextStep.x == nextStep.y && nextStep.y == 0)
-        {
-            find_next_step();
-            if(nextStep.x >0 )
-            {
-               facingSide = 0;
-
-            }
-            else
-            {
-                if( nextStep.x < 0 )
-                {
-                    facingSide = 2;
-                }
-                else
-                {
-                    if (nextStep.y<0)
-                    {
-                        facingSide = 3;
-                    }
-                    else
-                        facingSide = 1;
-                }
-            }
-        }
+    public EvilMonster(int[][] movementMap, MyPoint location, MyPoint playerLocation, int speed) {
+        this.movementMap = movementMap;
+        this.location = location;
+        this.playerLocation = playerLocation;
+        this.speed = speed;
+        this.move = speed;
+        myFactory.getInstance().monsetNextStep =new MonsetNextStep(movementMap,location,playerLocation);
     }
 
-    void find_next_step()
+    public boolean tick()
     {
+        if(move == speed) {
+            runAlgo = !myFactory.getInstance().monsetNextStep.running;
+            if (myFactory.getInstance().monsetNextStep.finished) {
+                this.nextStep = myFactory.getInstance().monsetNextStep.nextStep;
 
+            } else
+                nextStep = new MyPoint(0, 0);
+
+            if (runAlgo) {
+                myFactory.getInstance().monsetNextStep.start();
+            }
+            move = 0;
+            return step();
+        }
+        move++;
+        return false;
     }
 
-    void step ()
+    public boolean step ()
     {
         location.y+=nextStep.y;
         location.x+=nextStep.x;
+        if(location == playerLocation)
+        {
+            return true;
+        }
+        else return false;
     }
 
-    public void render()
+    public void render(Canvas c,float x,float y)
     {
         if(showing)
         {
+            c.drawBitmap(myFactory.getInstance().EvilMonster,x,y,myFactory.getInstance().paint);
             switch (num_animation)
             {
                 case 1:
                 {
 
                     ++num_animation;
+                    break;
                 }
                 case 2:
                 {
 
                     ++num_animation;
+                    break;
                 }
                 case 3:
                 {
 
                     ++num_animation;
+                    break;
                 }
                 case 4:
                 {
 
                     ++num_animation;
+                    break;
                 }
                 case 5:
                 {
 
                     num_animation = 0;
+                    break;
                 }
                 default:
                 {
                     num_animation = 0;
+                    break;
                 }
 
             }
