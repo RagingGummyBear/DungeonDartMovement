@@ -99,7 +99,13 @@ public class PackedLevel implements Serializable {
 
     public void render (Canvas c)
     {
-        cameraControl.render(c);
+        try{
+            cameraControl.render(c);
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
         if(evilMonster.showing)
         {
             int temp1 = (cameraControl.player_position.x - evilMonster.location.x);

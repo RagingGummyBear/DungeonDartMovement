@@ -139,12 +139,15 @@ public class CameraControl implements Serializable {
 
     }
 
-    public void render (Canvas c)
-    {
+    public void render (Canvas c) throws Exception {
        if(moved) {
 
            moved = false;
        }
+        if(tiles == null)
+        {
+            throw  new Exception("The tiles are null in CameraControl, The location of the player x:" +player_position.x + " y: "+player_position.y);
+        }
         for(int i=0;i<myFactory.TILENUMBER;i++)
         {
             for(int y=0;y<myFactory.TILENUMBER;y++) {
