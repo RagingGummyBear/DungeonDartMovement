@@ -161,7 +161,8 @@ public class LevelMap implements Serializable {
         {
             for(int z=0;z<myFactory.TILENUMBER;z++)
             {
-               if(x+i<tiles.length-5 && y+z<tiles.length-5&& x+i >5 && y+z > 5) temp[i][z] = this.tiles[x+i][y+z];
+               if(x+i<tiles.length-5 && y+z<tiles.length-5&& x+i >5 && y+z > 5)
+                   temp[i][z] = this.tiles[x+i][y+z];
                 else{
                     System.out.println("The location of the nulls x: " + x + " y:" + y + "  i:" + i + "  z: " +z);
                    return null;

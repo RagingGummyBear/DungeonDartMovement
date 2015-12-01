@@ -52,15 +52,19 @@ public class EvilMonster implements Serializable{
 
     public boolean tick()
     {
-        if(move == speed) {
+        if(move >= speed) {
             runAlgo = !myFactory.getInstance().monsetNextStep.running;
             if (myFactory.getInstance().monsetNextStep.finished) {
                 this.nextStep = myFactory.getInstance().monsetNextStep.nextStep;
 
             } else
-                nextStep = new MyPoint(0, 0);
+                nextStep = new MyPoint(0,0);
 
-            if (runAlgo) {
+            if (runAlgo && myFactory.getInstance().monsetNextStep.finished) {
+
+                myFactory.getInstance().monsetNextStep.monsterLocation = this.location;
+                myFactory.getInstance().monsetNextStep.playerLocation = this.playerLocation;
+
                 myFactory.getInstance().monsetNextStep.start();
             }
             move = 0;

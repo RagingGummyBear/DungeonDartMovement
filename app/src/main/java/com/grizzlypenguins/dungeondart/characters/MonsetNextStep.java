@@ -18,7 +18,7 @@ public class MonsetNextStep implements Runnable {
     MyPoint monsterLocation;
     public MyPoint nextStep= new MyPoint(0,0);
 
-    public boolean finished = false ;
+    public boolean finished = true ;
     Thread thread;
     public boolean running = false;
 
@@ -32,13 +32,13 @@ public class MonsetNextStep implements Runnable {
     public void run() {
 
         ArrayList <Jazol> temp = new ArrayList<>();
+        System.out.println("MonsterHunt running");
         temp = algoritmi.returnPath(maze,monsterLocation,playerLocation);
         nextStep = monsterLocation;
-        nextStep.x = temp.get(0).index / myFactory.TILENUMBER;
-        nextStep.y = temp.get(0).index % myFactory.TILENUMBER;
+        nextStep.x = (int)Math.floor(temp.get(0).index / maze.length);
+        nextStep.y =  (int)Math.floor(temp.get(0).index % maze[0].length);
         nextStep.x -= monsterLocation.x;
         nextStep.y -= monsterLocation.y;
-
         finished = true;
         running=false;
 
@@ -48,20 +48,27 @@ public class MonsetNextStep implements Runnable {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
     }
+
     synchronized public void start()
     {
-        this.start();
-        thread=new Thread(this);
-        running=true;
-        finished = false;
+        try {
+            this.run();
+            thread = new Thread(this);
+            running = true;
+            finished = false;
+        }
+        catch (Exception e)
+        {
+            System.out.print(e.getMessage());
+        }
     }
 
     synchronized public void stop()
     {
         try {
-            finished = false;
+            finished = true;
+            nextStep = new MyPoint(0,0);
             running=false;
             thread.join();
         } catch (InterruptedException e) {

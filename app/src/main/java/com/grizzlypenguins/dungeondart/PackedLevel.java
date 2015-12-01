@@ -45,6 +45,7 @@ public class PackedLevel implements Serializable {
         torchLight.tick();
        if(evilMonster.tick())
        {
+           evilMonster.playerLocation = mainCharacter.location;
            gameFinished = true;
            mainCharacter.alive = false;
            int temp1 = Math.abs(cameraControl.player_position.x - evilMonster.location.x);

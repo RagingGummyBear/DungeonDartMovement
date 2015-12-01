@@ -197,7 +197,7 @@ public class MainMenu extends Activity {
                         GamePlayActivity.class);
                 Difficulty dif = new Difficulty((int) ratingBar.getRating());
 
-                startNewLevel = new Level(dif, myFactory.getInstance().test_map_1(),window.getDecorView().getWidth(),window.getDecorView().getHeight());
+                startNewLevel = new Level(dif, myFactory.getInstance().test_map_3(),window.getDecorView().getWidth(),window.getDecorView().getHeight());
                 startNewLevel.start();
                 initializeBitmaps();
                 while(startNewLevel.running){

@@ -12,4 +12,9 @@ public class MyPoint implements Serializable {
         this.x= x;
         this.y=y;
     }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return new MyPoint(x,y);
+    }
 }

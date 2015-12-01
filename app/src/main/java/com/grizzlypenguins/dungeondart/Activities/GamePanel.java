@@ -40,18 +40,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     {
         super(context, attrs);
         initialize();
-
     }
     public GamePanel(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initialize();
-
     }
 
     public GamePanel(Context context) {
         super(context);
         initialize();
-
     }
 
     void initialize()

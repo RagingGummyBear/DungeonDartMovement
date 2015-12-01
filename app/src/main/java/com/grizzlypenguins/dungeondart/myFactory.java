@@ -62,6 +62,21 @@ public class myFactory {
 
     }
 
+
+    public LevelMap test_map_3()
+    {
+        int tileNum = 30;
+        //(Tile Tiles [][],int tileNumber, int TileSize,String mapName)
+        LevelMap temp=new LevelMap(test_Tiles_1(tileNum),"TestMap3");
+        for(int i=10;i<20;i++)
+        {
+            for(int y=10;y<20;y++)
+            if(temp.tiles[i][y].define==0)temp.tiles[i][y].define=1;
+        }
+        temp.tiles[15][15].define = 7;
+        return temp;
+    }
+
     public LevelMap test_map_1()
     {
         int tileNum = 30;
@@ -122,7 +137,7 @@ public class myFactory {
     {
         int tileNum = i;
         //(Tile Tiles [][],int tileNumber, int TileSize,String mapName)
-        return new LevelMap(test_Tiles_2(120),"TestMap2");
+        return new LevelMap(test_Tiles_2(tileNum),"TestMap2");
     }
 
     public Tile[][] test_Tiles_2(int tileNumber)
