@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 
 import com.grizzlypenguins.dungeondart.CameraControl;
 import com.grizzlypenguins.dungeondart.Difficulty;
+import com.grizzlypenguins.dungeondart.GameLoop.FindNextStep;
 import com.grizzlypenguins.dungeondart.LevelMap;
 import com.grizzlypenguins.dungeondart.characters.EvilMonster;
 import com.grizzlypenguins.dungeondart.characters.MainCharacter;
@@ -38,34 +39,21 @@ public class PackedLevel implements Serializable {
         this.torchLight = torchLight;
         this.evilMonster = evilMonster;
         playerScoring = new PlayerScoring();
+        myFactory.getInstance().findNextStep = new FindNextStep(myFactory.getInstance().get_MovementMap(levelMap.tiles),cameraControl.player_position,evilMonster.location);
     }
 
    public void tick() throws Exception {
 
+        evilMonster.tick();
         torchLight.tick();
-       if(evilMonster.tick())
-       {
-           evilMonster.playerLocation = mainCharacter.location;
-           gameFinished = true;
-           mainCharacter.alive = false;
-           int temp1 = Math.abs(cameraControl.player_position.x - evilMonster.location.x);
-           int temp2 = Math.abs(cameraControl.player_position.y - evilMonster.location.y);
-           if(temp1 <4)
-           {
-               evilMonster.showing = true;
-           }
-           else
-               if(temp2 <4)
-               {
-                   evilMonster.showing = true;
-               }
-           else
-               {
-                   evilMonster.showing = false;
-               }
-       }
-        mainCharacter.tick();
+        evilMonster.playerLocation = mainCharacter.location;
 
+
+          // gameFinished = true;
+           //mainCharacter.alive = false;
+
+       levelMap.tiles[evilMonster.location.x][evilMonster.location.y].monster = true;
+        mainCharacter.tick();
         Tile temp = cameraControl.tick();
        if(temp !=null )
        {
@@ -107,17 +95,7 @@ public class PackedLevel implements Serializable {
         {
             System.out.println(e.getMessage());
         }
-        if(evilMonster.showing)
-        {
-            int temp1 = (cameraControl.player_position.x - evilMonster.location.x);
-            int temp2 = (cameraControl.player_position.y - evilMonster.location.y);
-            int plocation = (int) Math.floor(myFactory.TILENUMBER / 2);
-            plocation++;
-            temp1+=plocation;
-            temp2+=plocation;
-            evilMonster.render(c,temp1,temp2);
-
-        }
+        evilMonster.render(c,0,0);
         mainCharacter.render(c);
         torchLight.render(c);
     }

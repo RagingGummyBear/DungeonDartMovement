@@ -63,7 +63,7 @@ public class Difficulty implements Serializable {
             }
             default: {
 
-                monsterSpeed = 3;
+                monsterSpeed = 10;
                 playerSpeed = 5;
                 multiplier = 1.2;
                 torchDecrease = 1;

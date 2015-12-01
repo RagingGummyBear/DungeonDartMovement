@@ -2,6 +2,7 @@ package com.grizzlypenguins.dungeondart.characters;
 
 import android.graphics.Canvas;
 
+import com.grizzlypenguins.dungeondart.GameLoop.FindNextStep;
 import com.grizzlypenguins.dungeondart.effects.Effect;
 import com.grizzlypenguins.dungeondart.MyPoint;
 import com.grizzlypenguins.dungeondart.myFactory;
@@ -18,7 +19,7 @@ public class EvilMonster implements Serializable{
     public MyPoint location = new MyPoint(0,0);
     public MyPoint nextStep = new MyPoint(0,0);
     public MyPoint playerLocation = new MyPoint(0,0);
-
+    private Thread thread;
 
     private boolean runAlgo = false;
 
@@ -35,10 +36,8 @@ public class EvilMonster implements Serializable{
     public EvilMonster(MyPoint location, int speed,int [][]map) {
 
         movementMap = map;
-
         this.location = location;
         this.speed = speed;
-
     }
 
     public EvilMonster(int[][] movementMap, MyPoint location, MyPoint playerLocation, int speed) {
@@ -52,26 +51,29 @@ public class EvilMonster implements Serializable{
 
     public boolean tick()
     {
-        if(move >= speed) {
-            runAlgo = !myFactory.getInstance().monsetNextStep.running;
-            if (myFactory.getInstance().monsetNextStep.finished) {
-                this.nextStep = myFactory.getInstance().monsetNextStep.nextStep;
+        System.out.print("WTF?!");
+            if (move >= speed) {
 
-            } else
-                nextStep = new MyPoint(0,0);
+                if(myFactory.getInstance().findNextStep.finished)
+                {
 
-            if (runAlgo && myFactory.getInstance().monsetNextStep.finished) {
+                    //this.location.x+=myFactory.getInstance().findNextStep.nextStep.x;
+                    //this.location.y+=myFactory.getInstance().findNextStep.nextStep.y;
 
-                myFactory.getInstance().monsetNextStep.monsterLocation = this.location;
-                myFactory.getInstance().monsetNextStep.playerLocation = this.playerLocation;
+                    myFactory.getInstance().findNextStep.monsterLocation = this.location;
+                    myFactory.getInstance().findNextStep.playerLocation = this.playerLocation;
 
-                myFactory.getInstance().monsetNextStep.start();
+                    thread = new Thread(myFactory.getInstance().findNextStep);
+                    thread.start();
+
+                }
+                move = 0;
+                return step();
             }
-            move = 0;
-            return step();
-        }
-        move++;
-        return false;
+            move++;
+            return false;
+
+
     }
 
     public boolean step ()
@@ -87,55 +89,6 @@ public class EvilMonster implements Serializable{
 
     public void render(Canvas c,float x,float y)
     {
-        if(showing)
-        {
-            c.drawBitmap(myFactory.getInstance().EvilMonster,x,y,myFactory.getInstance().paint);
-            switch (num_animation)
-            {
-                case 1:
-                {
-
-                    ++num_animation;
-                    break;
-                }
-                case 2:
-                {
-
-                    ++num_animation;
-                    break;
-                }
-                case 3:
-                {
-
-                    ++num_animation;
-                    break;
-                }
-                case 4:
-                {
-
-                    ++num_animation;
-                    break;
-                }
-                case 5:
-                {
-
-                    num_animation = 0;
-                    break;
-                }
-                default:
-                {
-                    num_animation = 0;
-                    break;
-                }
-
-            }
-
-        }
-        else
-        {
-            num_animation = 0;
-        }
-
 
     }
 

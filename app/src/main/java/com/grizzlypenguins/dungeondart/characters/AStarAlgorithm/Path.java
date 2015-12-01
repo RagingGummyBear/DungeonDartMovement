@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Path {
 	// The waypoints in the path (list of coordiantes making up the path)
-	private ArrayList<Node> waypoints = new ArrayList<Node>();
+	public ArrayList<Node> waypoints = new ArrayList<Node>();
 	
 	public Path() {
 	}

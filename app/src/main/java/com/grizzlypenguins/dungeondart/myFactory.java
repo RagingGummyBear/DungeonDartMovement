@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 
+import com.grizzlypenguins.dungeondart.GameLoop.FindNextStep;
 import com.grizzlypenguins.dungeondart.characters.MonsetNextStep;
 import com.grizzlypenguins.dungeondart.effects.PowerUpBonusPoints;
 import com.grizzlypenguins.dungeondart.effects.PowerUpMovementSpeed;
@@ -49,6 +50,7 @@ public class myFactory {
     public static final int TILENUMBER = 9;
     private static myFactory ourInstance = new myFactory();
 
+    public FindNextStep findNextStep;
 
     public static myFactory getInstance() {
         return ourInstance;
@@ -65,21 +67,21 @@ public class myFactory {
 
     public LevelMap test_map_3()
     {
-        int tileNum = 30;
+        int tileNum = 100;
         //(Tile Tiles [][],int tileNumber, int TileSize,String mapName)
         LevelMap temp=new LevelMap(test_Tiles_1(tileNum),"TestMap3");
-        for(int i=10;i<20;i++)
+        for(int i=10;i<90;i++)
         {
-            for(int y=10;y<20;y++)
+            for(int y=10;y<90;y++)
             if(temp.tiles[i][y].define==0)temp.tiles[i][y].define=1;
         }
-        temp.tiles[15][15].define = 7;
+        temp.tiles[11][11].define = 7;
         return temp;
     }
 
     public LevelMap test_map_1()
     {
-        int tileNum = 30;
+        int tileNum = 120;
         //(Tile Tiles [][],int tileNumber, int TileSize,String mapName)
         return new LevelMap(test_Tiles_1(tileNum),"TestMap1");
     }

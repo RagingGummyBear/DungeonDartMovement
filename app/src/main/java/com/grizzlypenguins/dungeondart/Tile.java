@@ -18,6 +18,7 @@ public class Tile implements Serializable {
     private int powerUp = 0; // powerUp = 0 , no powerup on that tile
     private int trap = 0;   // trap = 0, no traps on that Tile trap<0 used trap
     public boolean shadow = false;
+    public boolean monster = false;
     public int x,y;
 
     public Tile(int move, int pu, int t)
@@ -88,7 +89,10 @@ public class Tile implements Serializable {
                     break;
                 }
             }
-
+            if(monster)
+            {
+                c.drawBitmap(myFactory.getInstance().EvilMonster,x,y,myFactory.getInstance().paint);
+            }
             PowerUpsAndTrapsBank.getInstance().renderTrap(c,x,y,trap);
             PowerUpsAndTrapsBank.getInstance().renderPowerUp(c,x,y,powerUp);
     }
